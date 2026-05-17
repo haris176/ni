@@ -1,12 +1,361 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Umrah IPANI 2026</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>IPANI - Umrah 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css.css">
 </head>
 <body>
 
-<iframe src="https://script.google.com/a/macros/uinbukittinggi.ac.id/s/AKfycbzWtXjqTEILim0zRYrE0T42L04kCHIxbkrQwCrrYVAt2At0gmTqe6hSzNZ67IB8JH0p/exec"></iframe>
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-content">
+    <div class="splash-logo">
+      <div class="splash-logo-fallback"><span style="font-family:'Playfair Display',serif;font-weight:800;color:#1565C0">NI</span></div>
+    </div>
+    <h1 class="splash-title">IPANI</h1>
+    <p class="splash-sub">Umrah 2026</p>
+    <div class="splash-loader"><div></div><div></div><div></div></div>
+  </div>
+</div>
 
+<!-- SIDEBAR OVERLAY (mobile tap-to-close) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<div id="app">
+
+  <!-- ===== AUTH ===== -->
+  <section id="authSection" class="auth-section">
+    <div class="auth-bg">
+      <div class="auth-bg-circle c1"></div>
+      <div class="auth-bg-circle c2"></div>
+      <div class="auth-bg-circle c3"></div>
+    </div>
+    <div class="auth-container">
+      <div class="auth-brand">
+        <div class="auth-logo">NI</div>
+        <h2>IPANI</h2>
+        <p>Sistem Pendaftaran Umrah 2026</p>
+      </div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')" id="tabLogin">Masuk</button>
+        <button class="auth-tab" onclick="switchTab('register')" id="tabRegister">Daftar</button>
+      </div>
+      <!-- LOGIN -->
+      <div id="formLogin" class="auth-form">
+        <div class="form-group">
+          <label><i class="fa fa-user"></i> Username</label>
+          <input type="text" id="loginUsername" placeholder="Masukkan username" autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label><i class="fa fa-lock"></i> Password</label>
+          <div class="input-eye">
+            <input type="password" id="loginPassword" placeholder="Masukkan password" autocomplete="current-password">
+            <button type="button" onclick="togglePwd('loginPassword',this)"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn-primary full" onclick="doLogin()"><span>Masuk</span><i class="fa fa-arrow-right"></i></button>
+        <div id="loginMsg" class="auth-msg"></div>
+      </div>
+      <!-- REGISTER -->
+      <div id="formRegister" class="auth-form hidden">
+        <div class="form-group">
+          <label><i class="fa fa-user"></i> Username</label>
+          <input type="text" id="regUsername" placeholder="Buat username">
+        </div>
+        <div class="form-group">
+          <label><i class="fa fa-lock"></i> Password</label>
+          <div class="input-eye">
+            <input type="password" id="regPassword" placeholder="Buat password">
+            <button type="button" onclick="togglePwd('regPassword',this)"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><i class="fa fa-lock"></i> Konfirmasi Password</label>
+          <div class="input-eye">
+            <input type="password" id="regPassword2" placeholder="Ulangi password">
+            <button type="button" onclick="togglePwd('regPassword2',this)"><i class="fa fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn-primary full" onclick="doRegister()"><span>Daftar Akun</span><i class="fa fa-user-plus"></i></button>
+        <div id="registerMsg" class="auth-msg"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DASHBOARD ===== -->
+  <section id="dashSection" class="dash-section hidden">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">NI</div>
+        <div>
+          <strong>IPANI</strong>
+          <small>Umrah 2026</small>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" onclick="showPage('dashboard')" id="menuDashboard">
+          <i class="fa fa-chart-pie"></i><span>Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-link" onclick="showPage('peserta')" id="menuPeserta">
+          <i class="fa fa-users"></i><span>Peserta</span>
+        </a>
+        <a href="#" class="sidebar-link hidden" onclick="showPage('keuangan')" id="menuKeuangan">
+          <i class="fa fa-money-bill-wave"></i><span>Keuangan</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button onclick="logout()" class="sidebar-logout">
+          <i class="fa fa-sign-out-alt"></i><span>Keluar</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-right">
+          <div class="topbar-user">
+            <i class="fa fa-user-circle"></i>
+            <div class="user-info">
+              <strong id="topbarUsername"></strong>
+              <small id="topbarRole"></small>
+            </div>
+          </div>
+          <button class="btn-icon" onclick="logout()" title="Keluar"><i class="fa fa-sign-out-alt"></i></button>
+        </div>
+      </div>
+
+      <!-- PAGE: DASHBOARD -->
+      <div id="pageDashboard" class="page active">
+        <div class="page-header">
+          <h2>Dashboard</h2>
+          <p>Ringkasan pendaftaran Umrah 2026</p>
+        </div>
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card blue">
+            <div class="stat-icon"><i class="fa fa-users"></i></div>
+            <div class="stat-info"><span class="stat-num" id="statTotalPeserta">-</span><span class="stat-label">Total Peserta</span></div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-icon"><i class="fa fa-check-circle"></i></div>
+            <div class="stat-info"><span class="stat-num" id="statLunasPanjar">-</span><span class="stat-label">Panjar Lunas</span></div>
+          </div>
+          <div class="stat-card white">
+            <div class="stat-icon"><i class="fa fa-wallet"></i></div>
+            <div class="stat-info"><span class="stat-num" id="statTotalPanjar">-</span><span class="stat-label">Uang Panjar</span></div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-icon"><i class="fa fa-check-double"></i></div>
+            <div class="stat-info"><span class="stat-num" id="statLunasPelunasan">-</span><span class="stat-label">Pelunasan Lunas</span></div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-icon"><i class="fa fa-hand-holding-usd"></i></div>
+            <div class="stat-info"><span class="stat-num" id="statTotalPelunasan">-</span><span class="stat-label">Uang Pelunasan</span></div>
+          </div>
+        </div>
+        <div class="card mt-4">
+          <div class="card-header"><h3><i class="fa fa-table"></i> Rekapitulasi Pembayaran</h3></div>
+          <div class="rekap-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Jenis</th><th>Jumlah Lunas</th><th>Total Masuk</th><th>Total Keseluruhan</th></tr></thead>
+              <tbody id="rekapTableBody"><tr><td colspan="4" class="text-center"><div class="loader-small"></div> Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: PESERTA -->
+      <div id="pagePeserta" class="page hidden">
+        <div class="page-header">
+          <h2>Data Peserta</h2>
+          <p>Daftar peserta Umrah 2026</p>
+        </div>
+        <div class="page-actions">
+          <div class="search-box">
+            <i class="fa fa-search"></i>
+            <input type="text" id="searchPeserta" placeholder="Cari nama, KTP, daerah..." oninput="filterPeserta()">
+          </div>
+          <button class="btn-primary" onclick="openModalTambah()"><i class="fa fa-plus"></i> Tambah Peserta</button>
+        </div>
+
+        <!-- DESKTOP TABLE -->
+        <div class="card peserta-desktop mt-3">
+          <div class="table-wrapper">
+            <table class="data-table" id="pesertaTable">
+              <thead>
+                <tr>
+                  <th>#</th><th>Nama</th><th>No. KTP</th><th>Daerah</th>
+                  <th>J.Kel</th><th>Status Nikah</th>
+                  <th>Panjar</th><th>Status Panjar</th>
+                  <th>Pelunasan</th><th>Status Pelunasan</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="pesertaTableBody">
+                <tr><td colspan="11" class="text-center"><div class="loader-small"></div> Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MOBILE CARD LIST -->
+        <div class="peserta-card-list" id="pesertaCardList">
+          <div class="empty-state"><div class="loader-small"></div> <p>Memuat data...</p></div>
+        </div>
+      </div>
+
+      <!-- PAGE: KEUANGAN -->
+      <div id="pageKeuangan" class="page hidden">
+        <div class="page-header">
+          <h2>Keuangan</h2>
+          <p>Konfirmasi pembayaran peserta</p>
+        </div>
+        <div class="stats-grid" id="keuanganStats"></div>
+
+        <!-- DESKTOP TABLE -->
+        <div class="card keu-desktop mt-4">
+          <div class="card-header"><h3><i class="fa fa-file-invoice-dollar"></i> Konfirmasi Pembayaran</h3></div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th><th>Nama</th>
+                  <th>Panjar</th><th>Bukti</th><th>Status</th><th>Aksi</th>
+                  <th>Pelunasan</th><th>Bukti</th><th>Status</th><th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="keuanganTableBody"><tr><td colspan="10" class="text-center">Memuat...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- MOBILE CARD LIST -->
+        <div class="keu-card-list mt-3" id="keuanganCardList"></div>
+      </div>
+
+    </main>
+  </section>
+</div>
+
+<!-- MODAL TAMBAH/EDIT -->
+<div id="modalPeserta" class="modal-overlay hidden">
+  <div class="modal-box large">
+    <div class="modal-header">
+      <h3 id="modalPesertaTitle"><i class="fa fa-user-plus"></i> Tambah Peserta</h3>
+      <button class="modal-close" onclick="closeModal('modalPeserta')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>Nama Lengkap *</label><input type="text" id="pNama" placeholder="Nama sesuai passport"></div>
+        <div class="form-group"><label>Nomor KTP *</label><input type="text" id="pNoKtp" placeholder="16 digit NIK" inputmode="numeric"></div>
+        <div class="form-group"><label>Daerah Asal</label><input type="text" id="pDaerah" placeholder="Kota/Kabupaten"></div>
+        <div class="form-group"><label>Alamat Lengkap</label><textarea id="pAlamat" placeholder="Alamat domisili" rows="2"></textarea></div>
+        <div class="form-group">
+          <label>Jenis Kelamin</label>
+          <select id="pJK"><option value="">-- Pilih --</option><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
+        </div>
+        <div class="form-group"><label>Status Pernikahan</label><input type="text" id="pStatus" placeholder="Menikah / Belum Menikah"></div>
+        <div class="form-group"><label>Alumni</label><input type="text" id="pAlumni" placeholder="Asal alumni"></div>
+        <div class="form-group">
+          <label>Hubungan Mahram</label>
+          <select id="pHubunganAlumni"><option value="">-- Pilih Mahram --</option></select>
+        </div>
+        <div class="form-group"><label>Uang Panjar (Rp)</label><input type="number" id="pUangPanjar" placeholder="0" inputmode="numeric"></div>
+        <div class="form-group">
+          <label>Bukti Panjar</label>
+          <div class="file-upload-area" id="uploadPanjarArea">
+            <i class="fa fa-cloud-upload-alt"></i><span>Upload Bukti Panjar</span><small>JPG, PNG, PDF max 5MB</small>
+            <input type="file" id="fileBuktiPanjar" accept="image/*,.pdf" onchange="handleFileSelect(this,'uploadPanjarArea','previewPanjar')">
+          </div>
+          <div id="previewPanjar" class="file-preview hidden"></div>
+        </div>
+        <div class="form-group"><label>Uang Pelunasan (Rp)</label><input type="number" id="pUangPelunasan" placeholder="0" inputmode="numeric"></div>
+      </div>
+
+      <div id="uploadSection" class="upload-section">
+        <h4><i class="fa fa-lock" id="uploadLockIcon"></i> <span id="uploadSectionTitle">Dokumen (Tersedia setelah panjar dikonfirmasi Lunas)</span></h4>
+        <div class="form-grid" id="uploadGrid">
+          <div class="form-group">
+            <label>Foto KTP</label>
+            <div class="file-upload-area disabled" id="uploadKTPArea">
+              <i class="fa fa-id-card"></i><span>Upload Foto KTP</span><small>JPG, PNG, PDF</small>
+              <input type="file" id="fileFotoKTP" accept="image/*,.pdf" disabled onchange="handleFileSelect(this,'uploadKTPArea','previewKTP')">
+            </div>
+            <div id="previewKTP" class="file-preview hidden"></div>
+          </div>
+          <div class="form-group">
+            <label>Foto Kartu Keluarga</label>
+            <div class="file-upload-area disabled" id="uploadKKArea">
+              <i class="fa fa-home"></i><span>Upload Foto KK</span><small>JPG, PNG, PDF</small>
+              <input type="file" id="fileFotoKK" accept="image/*,.pdf" disabled onchange="handleFileSelect(this,'uploadKKArea','previewKK')">
+            </div>
+            <div id="previewKK" class="file-preview hidden"></div>
+          </div>
+          <div class="form-group">
+            <label>Foto Passport</label>
+            <div class="file-upload-area disabled" id="uploadPassportArea">
+              <i class="fa fa-passport"></i><span>Upload Foto Passport</span><small>JPG, PNG, PDF</small>
+              <input type="file" id="fileFotoPassport" accept="image/*,.pdf" disabled onchange="handleFileSelect(this,'uploadPassportArea','previewPassport')">
+            </div>
+            <div id="previewPassport" class="file-preview hidden"></div>
+          </div>
+          <div class="form-group">
+            <label>Bukti Pelunasan</label>
+            <div class="file-upload-area disabled" id="uploadPelunasanArea">
+              <i class="fa fa-receipt"></i><span>Upload Bukti Pelunasan</span><small>JPG, PNG, PDF</small>
+              <input type="file" id="fileBuktiPelunasan" accept="image/*,.pdf" disabled onchange="handleFileSelect(this,'uploadPelunasanArea','previewPelunasan')">
+            </div>
+            <div id="previewPelunasan" class="file-preview hidden"></div>
+          </div>
+        </div>
+      </div>
+      <div id="modalPesertaMsg" class="auth-msg mt-2"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalPeserta')">Batal</button>
+      <button class="btn-primary" id="btnSimpanPeserta" onclick="simpanPeserta()"><i class="fa fa-save"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETAIL -->
+<div id="modalDetail" class="modal-overlay hidden">
+  <div class="modal-box large">
+    <div class="modal-header">
+      <h3><i class="fa fa-id-badge"></i> Detail Peserta</h3>
+      <button class="modal-close" onclick="closeModal('modalDetail')"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modalDetailBody"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('modalDetail')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<!-- LOADING -->
+<div id="loadingOverlay" class="loading-overlay hidden">
+  <div class="loading-spinner">
+    <div class="spinner-ring"></div>
+    <p id="loadingText">Memproses...</p>
+  </div>
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
